@@ -13,9 +13,6 @@ import {
 import { LoginSchema } from "@/app/lib/validation";
 import prisma from "@/app/lib/prisma";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
 export async function POST(req: NextRequest) {
   try {
     const ip = await getClientIp();
