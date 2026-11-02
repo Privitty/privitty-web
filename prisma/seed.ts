@@ -7,7 +7,7 @@ async function main() {
   console.log("🌱 Starting Privitty CMS Database Seed...");
 
   // 1. Seed or Update Admin User
-  const adminEmail = process.env.ADMIN_INITIAL_EMAIL || "admin@privitty.com";
+  const adminEmail = (process.env.ADMIN_INITIAL_EMAIL || "admin@privitty.com").trim().toLowerCase();
   const adminPassword = process.env.ADMIN_INITIAL_PASSWORD || "PrivittyAdmin2026!#";
   const adminName = process.env.ADMIN_INITIAL_NAME || "Privitty Security Admin";
 
@@ -17,7 +17,8 @@ async function main() {
     where: { email: adminEmail },
     update: {
       name: adminName,
-      // Only update passwordHash if expressly resetting
+      passwordHash,
+      isActive: true,
     },
     create: {
       email: adminEmail,

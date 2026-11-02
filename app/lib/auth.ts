@@ -75,7 +75,9 @@ export async function getClientIp(): Promise<string> {
   return "127.0.0.1";
 }
 
-export async function createAdminSession(adminUserId: string): Promise<string> {
+export async function createAdminSession(
+  adminUserId: string
+): Promise<{ token: string; expiresAt: Date }> {
   const sessionToken = crypto.randomBytes(48).toString("hex");
   const expiresAt = new Date(Date.now() + SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000);
 
@@ -87,18 +89,7 @@ export async function createAdminSession(adminUserId: string): Promise<string> {
     },
   });
 
-  const cookieStore = await cookies();
-  cookieStore.set({
-    name: SESSION_COOKIE_NAME,
-    value: sessionToken,
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    expires: expiresAt,
-  });
-
-  return sessionToken;
+  return { token: sessionToken, expiresAt };
 }
 
 export async function getAdminSession(): Promise<AdminSessionUser | null> {
@@ -161,7 +152,6 @@ export async function clearAdminSession(): Promise<void> {
         where: { sessionToken: token },
       });
     }
-    cookieStore.delete(SESSION_COOKIE_NAME);
   } catch (err) {
     console.error("Error clearing admin session:", err);
   }

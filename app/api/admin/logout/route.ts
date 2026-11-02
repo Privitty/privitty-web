@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { getAdminSession, clearAdminSession, recordAuditLog } from "@/app/lib/auth";
+import {
+  SESSION_COOKIE_NAME,
+  getAdminSession,
+  clearAdminSession,
+  recordAuditLog,
+} from "@/app/lib/auth";
 
 export async function POST() {
   const admin = await getAdminSession();
@@ -12,5 +17,15 @@ export async function POST() {
     });
   }
   await clearAdminSession();
-  return NextResponse.json({ success: true });
+  const response = NextResponse.json({ success: true });
+  response.cookies.set({
+    name: SESSION_COOKIE_NAME,
+    value: "",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 0,
+  });
+  return response;
 }

@@ -1,5 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // Amplify Hosting runs on Amazon Linux. "native" alone is the Mac binary from local generate.
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
