@@ -5,14 +5,25 @@ frontend:
       commands:
         - nvm use 20 || nvm install 20
         - npm ci
+        - |
+          if [ -d .amplify-next-cache ]; then
+            mkdir -p .next
+            rm -rf .next/cache
+            mv .amplify-next-cache .next/cache
+          fi
     build:
       commands:
         - node ./scripts/write-amplify-env.mjs
         - npm run build
-        - mkdir -p .next/prisma-engines .next/node_modules/.prisma/client
+        - mkdir -p .next/prisma-engines
         - cp -f node_modules/.prisma/client/libquery_engine-rhel-openssl-3.0.x.so.node .next/prisma-engines/
-        - cp -f node_modules/.prisma/client/libquery_engine-rhel-openssl-3.0.x.so.node .next/node_modules/.prisma/client/
-        - cp -f node_modules/.prisma/client/schema.prisma .next/node_modules/.prisma/client/
+        - find .next -name '*.map' -delete
+        - rm -rf .amplify-next-cache
+        - |
+          if [ -d .next/cache ]; then
+            mv .next/cache .amplify-next-cache
+          fi
+        - du -sh .next
   artifacts:
     baseDirectory: .next
     files:
@@ -20,4 +31,4 @@ frontend:
   cache:
     paths:
       - node_modules/**/*
-      - .next/cache/**/*
+      - .amplify-next-cache/**/*
