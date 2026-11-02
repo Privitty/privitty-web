@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
     const draftPartners = totalPartners - publishedPartners;
     const totalDrafts = draftTestimonials + draftTeamMembers + draftWhitepapers + draftPartners;
 
-    const s3Bucket = process.env.AWS_S3_BUCKET || "";
+    const s3Bucket = process.env.S3_BUCKET || "";
     const isLocalStorage =
       process.env.ENABLE_LOCAL_STORAGE_FALLBACK === "true" || !s3Bucket;
 
@@ -77,7 +77,7 @@ export async function GET(req: NextRequest) {
         database: "PostgreSQL Connected",
         storageMode: isLocalStorage ? "Local Fallback" : "Amazon S3",
         s3Bucket: s3Bucket || "Not configured",
-        awsRegion: process.env.AWS_REGION || "us-east-1",
+        awsRegion: process.env.S3_REGION || "us-east-1",
       },
       recentActivity: recentAuditLogs,
     });
