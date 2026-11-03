@@ -103,7 +103,7 @@ export default async function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
               {/* Feature 1 */}
               <div className="flex items-center gap-3.5">
-                <div className="w-8 h-8 rounded-full bg-[#E5DDF5] text-[#503796] flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-full bg-[#503796] text-[#fff] flex items-center justify-center shrink-0">
                   <ShieldCheckIcon className="w-4 h-4" />
                 </div>
                 <span className="text-xs sm:text-sm font-bold text-[#17151D] tracking-tight">
@@ -113,7 +113,7 @@ export default async function Home() {
 
               {/* Feature 2 */}
               <div className="flex items-center gap-3.5">
-                <div className="w-8 h-8 rounded-full bg-[#E5DDF5] text-[#503796] flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-full bg-[#503796] text-[#fff] flex items-center justify-center shrink-0">
                   <ChipIcon className="w-4 h-4" />
                 </div>
                 <span className="text-xs sm:text-sm font-bold text-[#17151D] tracking-tight">
@@ -123,7 +123,7 @@ export default async function Home() {
 
               {/* Feature 3 */}
               <div className="flex items-center gap-3.5">
-                <div className="w-8 h-8 rounded-full bg-[#E5DDF5] text-[#503796] flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-full bg-[#503796] text-[#fff] flex items-center justify-center shrink-0">
                   <LayoutIcon className="w-4 h-4" />
                 </div>
                 <span className="text-xs sm:text-sm font-bold text-[#17151D] tracking-tight">
@@ -133,7 +133,7 @@ export default async function Home() {
 
               {/* Feature 4 */}
               <div className="flex items-center gap-3.5">
-                <div className="w-8 h-8 rounded-full bg-[#E5DDF5] text-[#503796] flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-full bg-[#503796] text-[#fff] flex items-center justify-center shrink-0">
                   <FingerprintIcon className="w-4 h-4" />
                 </div>
                 <span className="text-xs sm:text-sm font-bold text-[#17151D] tracking-tight">
@@ -166,8 +166,8 @@ export default async function Home() {
             {/* Card 1 */}
             <div data-gsap-item className="bg-white p-8 rounded-3xl border border-[#DDD8E8] space-y-6 flex flex-col justify-between premium-card">
               <div className="space-y-4">
-                <div className="w-10 h-10 rounded-xl bg-[#D2D2F3] text-[#4f378a] flex items-center justify-center">
-                  <AlertTriangleIcon className="w-5 h-5 text-[#4f378a]" />
+                <div className="w-10 h-10 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
+                  <AlertTriangleIcon className="w-5 h-5 text-[#fff]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#17151D] font-headline">VPNs leak</h3>
                 <p className="text-sm text-[#625F6B] leading-relaxed">
@@ -200,8 +200,8 @@ export default async function Home() {
             {/* Card 3 */}
             <div data-gsap-item className="bg-white p-8 rounded-3xl border border-[#DDD8E8] space-y-6 flex flex-col justify-between premium-card">
               <div className="space-y-4">
-                <div className="w-10 h-10 rounded-xl bg-[#D2D2F3] text-[#4f378a] flex items-center justify-center">
-                  <ShieldIcon className="w-5 h-5 text-[#4f378a]" />
+                <div className="w-10 h-10 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
+                  <ShieldIcon className="w-5 h-5 text-[#fff]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#17151D] font-headline">Uncontrollable Access</h3>
                 <p className="text-sm text-[#625F6B] leading-relaxed">
@@ -327,7 +327,7 @@ export default async function Home() {
             <div data-gsap-item className="bg-white p-8 lg:p-10 rounded-3xl border border-[#DDD8E8]/70 shadow-sm flex flex-col justify-between premium-card">
               <div>
                 {/* Purple Icon Badge */}
-                <div className="w-12 h-12 rounded-2xl bg-[#D8D4F5] text-[#553C9A] flex items-center justify-center">
+                <div className="w-12 h-12 rounded-2xl bg-[#6750A4] text-white flex items-center justify-center">
                   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="2" y="3" width="20" height="18" rx="4" />
                     <path d="m7 9 3 3-3 3" />
@@ -361,7 +361,7 @@ export default async function Home() {
             <div data-gsap-item className="bg-white p-8 lg:p-10 rounded-3xl border border-[#DDD8E8]/70 shadow-sm flex flex-col justify-between premium-card">
               <div>
                 {/* Purple Icon Badge */}
-                <div className="w-12 h-12 rounded-2xl bg-[#D8D4F5] text-[#553C9A] flex items-center justify-center">
+                <div className="w-12 h-12 rounded-2xl bg-[#6750A4] text-white flex items-center justify-center">
                   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
                     <path d="M3 3v5h5" />
@@ -451,7 +451,7 @@ export default async function Home() {
             <div data-gsap-item className="bg-white p-8 lg:p-10 rounded-3xl border border-[#DDD8E8]/70 shadow-sm flex flex-col justify-between premium-card">
               <div>
                 {/* Purple Icon Badge */}
-                <div className="w-12 h-12 rounded-2xl bg-[#D8D4F5] text-[#553C9A] flex items-center justify-center">
+                <div className="w-12 h-12 rounded-2xl bg-[#6750A4] text-white flex items-center justify-center">
                   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                     <circle cx="9" cy="7" r="4" />
@@ -474,7 +474,7 @@ export default async function Home() {
             <div data-gsap-item className="bg-white p-8 lg:p-10 rounded-3xl border border-[#DDD8E8]/70 shadow-sm flex flex-col justify-between premium-card">
               <div>
                 {/* Purple Icon Badge */}
-                <div className="w-12 h-12 rounded-2xl bg-[#D8D4F5] text-[#553C9A] flex items-center justify-center">
+                <div className="w-12 h-12 rounded-2xl bg-[#6750A4] text-white flex items-center justify-center">
                   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
                     <circle cx="12" cy="12" r="3" />
@@ -495,7 +495,7 @@ export default async function Home() {
             <div data-gsap-item className="bg-white p-8 lg:p-10 rounded-3xl border border-[#DDD8E8]/70 shadow-sm flex flex-col justify-between premium-card">
               <div>
                 {/* Purple Icon Badge */}
-                <div className="w-12 h-12 rounded-2xl bg-[#D8D4F5] text-[#553C9A] flex items-center justify-center">
+                <div className="w-12 h-12 rounded-2xl bg-[#6750A4] text-white flex items-center justify-center">
                   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="4" y="4" width="16" height="16" rx="2" />
                     <rect x="9" y="9" width="6" height="6" />
@@ -543,8 +543,8 @@ export default async function Home() {
           >
             <div data-gsap-item className="bg-white p-8 rounded-3xl border border-[#DDD8E8] space-y-6 flex flex-col justify-between premium-card">
               <div className="space-y-4">
-                <div className="w-10 h-10 rounded-xl bg-[#D2D2F3] text-[#4f378a] flex items-center justify-center">
-                  <FactoryIcon className="w-5 h-5 text-[#4f378a]" />
+                <div className="w-10 h-10 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
+                  <FactoryIcon className="w-5 h-5 text-[#fff]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#17151D] font-headline">Factory Floor &amp; Assembly Lines</h3>
                 <p className="text-sm text-[#625F6B] leading-relaxed">
@@ -559,8 +559,8 @@ export default async function Home() {
 
             <div data-gsap-item className="bg-white p-8 rounded-3xl border border-[#DDD8E8] space-y-6 flex flex-col justify-between premium-card">
               <div className="space-y-4">
-                <div className="w-10 h-10 rounded-xl bg-[#D2D2F3] text-[#4f378a] flex items-center justify-center">
-                  <ZapIcon className="w-5 h-5 text-[#4f378a]" />
+                <div className="w-10 h-10 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
+                  <ZapIcon className="w-5 h-5 text-[#fff]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#17151D] font-headline">Substations &amp; Utility Grids</h3>
                 <p className="text-sm text-[#625F6B] leading-relaxed">
@@ -575,8 +575,8 @@ export default async function Home() {
 
             <div data-gsap-item className="bg-white p-8 rounded-3xl border border-[#DDD8E8] space-y-6 flex flex-col justify-between premium-card">
               <div className="space-y-4">
-                <div className="w-10 h-10 rounded-xl bg-[#D2D2F3] text-[#4f378a] flex items-center justify-center">
-                  <CloudIcon className="w-5 h-5 text-[#4f378a]" />
+                <div className="w-10 h-10 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
+                  <CloudIcon className="w-5 h-5 text-[#fff]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#17151D] font-headline">Data Centers &amp; Sovereign Clouds</h3>
                 <p className="text-sm text-[#625F6B] leading-relaxed">

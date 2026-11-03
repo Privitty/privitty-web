@@ -96,7 +96,7 @@ export default function ProductPage() {
             {/* Left Column: 2 Stacked Cards + Buttons */}
             <div data-gsap="fade-up" className="lg:col-span-6 space-y-6">
               <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#DDD8E8]/70 shadow-sm space-y-3 premium-card">
-                <div className="w-10 h-10 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="4" y="4" width="16" height="16" rx="2" />
                     <rect x="9" y="9" width="6" height="6" />
@@ -115,7 +115,7 @@ export default function ProductPage() {
               </div>
 
               <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#DDD8E8]/70 shadow-sm space-y-3 premium-card">
-                <div className="w-10 h-10 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M5 12h14" />
                     <path d="m12 5 7 7-7 7" />
@@ -151,8 +151,8 @@ export default function ProductPage() {
                 {/* Console Header */}
                 <div className="flex items-center justify-between pb-4 border-b border-[#DDD8E8]">
                   <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
-                      <ZapIcon className="w-3.5 h-3.5 text-[#553C9A]" />
+                    <div className="w-7 h-7 rounded-lg bg-[#6750A4] text-white flex items-center justify-center">
+                      <ZapIcon className="w-3.5 h-3.5 text-[#fff]" />
                     </div>
                     <div>
                       <div className="text-xs font-bold font-mono text-[#17151D]">plc-substation-04.local</div>
@@ -228,7 +228,7 @@ export default function ProductPage() {
             className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8"
           >
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <rect x="3" y="11" width="18" height="11" rx="2" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
@@ -241,7 +241,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14" />
                   <path d="m12 5 7 7-7 7" />
@@ -254,7 +254,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="12" cy="12" r="10" />
                   <path d="m4.93 4.93 14.14 14.14" />
@@ -267,7 +267,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                   <polyline points="14 2 14 8 20 8" />
@@ -283,7 +283,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="12" cy="12" r="10" />
                   <line x1="12" y1="8" x2="12" y2="12" />
@@ -297,7 +297,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
                 </svg>
@@ -416,7 +416,7 @@ export default function ProductPage() {
               className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4"
             >
               <div data-gsap-item className="bg-white p-6 rounded-2xl border border-[#DDD8E8]/70 space-y-2.5 shadow-xs premium-card">
-                <div className="w-8 h-8 rounded-lg bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[#6750A4] text-white flex items-center justify-center">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                     <circle cx="9" cy="7" r="4" />
@@ -431,7 +431,7 @@ export default function ProductPage() {
               </div>
 
               <div data-gsap-item className="bg-white p-6 rounded-2xl border border-[#DDD8E8]/70 space-y-2.5 shadow-xs premium-card">
-                <div className="w-8 h-8 rounded-lg bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[#6750A4] text-white flex items-center justify-center">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                   </svg>
@@ -443,7 +443,7 @@ export default function ProductPage() {
               </div>
 
               <div data-gsap-item className="bg-white p-6 rounded-2xl border border-[#DDD8E8]/70 space-y-2.5 shadow-xs premium-card">
-                <div className="w-8 h-8 rounded-lg bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[#6750A4] text-white flex items-center justify-center">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <circle cx="12" cy="12" r="10" />
                     <polyline points="12 6 12 12 16 14" />
@@ -456,7 +456,7 @@ export default function ProductPage() {
               </div>
 
               <div data-gsap-item className="bg-white p-6 rounded-2xl border border-[#DDD8E8]/70 space-y-2.5 shadow-xs premium-card">
-                <div className="w-8 h-8 rounded-lg bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[#6750A4] text-white flex items-center justify-center">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                     <polyline points="14 2 14 8 20 8" />
@@ -581,7 +581,7 @@ export default function ProductPage() {
             className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8"
           >
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polyline points="16 18 22 12 16 6" />
                   <polyline points="8 6 2 12 8 18" />
@@ -594,7 +594,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <rect x="4" y="4" width="16" height="16" rx="2" />
                   <rect x="9" y="9" width="6" height="6" />
@@ -607,7 +607,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
                 </svg>
@@ -619,7 +619,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <line x1="4" y1="21" x2="4" y2="14" />
                   <line x1="4" y1="10" x2="4" y2="3" />
@@ -639,7 +639,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <rect x="2" y="3" width="20" height="14" rx="2" />
                   <path d="m8 21 8 0" />
@@ -653,7 +653,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
                   <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
@@ -735,7 +735,7 @@ export default function ProductPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between pb-3 border-b border-[#DDD8E8]">
                   <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center font-bold text-xs">
+                    <div className="w-7 h-7 rounded-lg bg-[#6750A4] text-white flex items-center justify-center font-bold text-xs">
                       P
                     </div>
                     <div>
@@ -797,7 +797,7 @@ export default function ProductPage() {
             className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8"
           >
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <rect x="2" y="3" width="20" height="14" rx="2" />
                   <line x1="8" y1="21" x2="16" y2="21" />
@@ -811,7 +811,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="12" cy="12" r="10" />
                   <polyline points="12 6 12 12 16 14" />
@@ -824,7 +824,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
                   <path d="m9 12 2 2 4-4" />
@@ -837,7 +837,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polyline points="4 17 10 11 4 5" />
                   <line x1="12" y1="19" x2="20" y2="19" />
@@ -850,7 +850,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M23 7 16 12 23 17 23 7Z" />
                   <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
@@ -863,7 +863,7 @@ export default function ProductPage() {
             </div>
 
             <div data-gsap-item className="bg-white p-7 rounded-2xl border border-[#DDD8E8]/70 space-y-3 shadow-xs premium-card">
-              <div className="w-9 h-9 rounded-xl bg-[#ECE7F6] text-[#553C9A] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-[#6750A4] text-white flex items-center justify-center">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                   <circle cx="9" cy="7" r="4" />
