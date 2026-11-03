@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { requireAdminSession, recordAuditLog } from "@/app/lib/auth";
 import { WhitepaperSchema, sanitizeSlug } from "@/app/lib/validation";
-import { deleteStorageObject } from "@/app/lib/s3";
+import { safeDeleteStorageObject } from "@/app/lib/s3-cleanup";
 import prisma from "@/app/lib/prisma";
 
 export async function GET(
@@ -65,6 +65,17 @@ export async function PUT(
       );
     }
 
+     // Fetch existing record to detect file changes
+    const existing = await prisma.whitepaper.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ error: "Whitepaper not found" }, { status: 404 });
+    }
+
+    const oldFileKey = existing.fileKey;
+    const newFileKey = parsed.data.fileKey;
+    const oldCoverImageUrl = existing.coverImageUrl;
+    const newCoverImageUrl = parsed.data.coverImageUrl ?? null;
+
     const updated = await prisma.whitepaper.update({
       where: { id },
       data: {
@@ -72,6 +83,28 @@ export async function PUT(
         publishedAt: parsed.data.publishedAt ? new Date(parsed.data.publishedAt) : undefined,
       },
     });
+
+    // Clean up old PDF file if it was replaced
+    if (oldFileKey && oldFileKey !== newFileKey) {
+      const result = await safeDeleteStorageObject(oldFileKey, {
+        model: "Whitepaper",
+        id,
+      });
+      if (result.deleted) {
+        console.log(`Cleaned up old whitepaper PDF: ${oldFileKey}`);
+      }
+    }
+
+    // Clean up old cover image if it was replaced or removed
+    if (oldCoverImageUrl && oldCoverImageUrl !== newCoverImageUrl) {
+      const result = await safeDeleteStorageObject(oldCoverImageUrl, {
+        model: "Whitepaper",
+        id,
+      });
+      if (result.deleted) {
+        console.log(`Cleaned up old whitepaper cover image: ${oldCoverImageUrl}`);
+      }
+    }
 
     await recordAuditLog({
       adminEmail: admin.email,
@@ -82,6 +115,8 @@ export async function PUT(
       details: {
         title: updated.title,
         isPublished: updated.isPublished,
+        pdfChanged: oldFileKey !== newFileKey,
+        coverChanged: oldCoverImageUrl !== newCoverImageUrl,
       },
     });
 
@@ -107,18 +142,31 @@ export async function DELETE(
     const admin = await requireAdminSession();
     const { id } = await params;
 
-    const searchParams = req.nextUrl.searchParams;
-    const deleteFile = searchParams.get("deleteFile") === "true";
-
     const existing = await prisma.whitepaper.findUnique({ where: { id } });
     if (!existing) {
       return NextResponse.json({ error: "Whitepaper not found" }, { status: 404 });
     }
 
+    // Delete the database record first
     await prisma.whitepaper.delete({ where: { id } });
 
-    if (deleteFile && existing.fileKey) {
-      await deleteStorageObject(existing.fileKey);
+    // Then clean up associated files from S3
+    const cleanupResults: Record<string, unknown> = {};
+
+    if (existing.fileKey) {
+      const pdfResult = await safeDeleteStorageObject(existing.fileKey);
+      cleanupResults.pdf = pdfResult;
+      if (pdfResult.deleted) {
+        console.log(`Deleted whitepaper PDF from storage: ${existing.fileKey}`);
+      }
+    }
+
+    if (existing.coverImageUrl) {
+      const coverResult = await safeDeleteStorageObject(existing.coverImageUrl);
+      cleanupResults.cover = coverResult;
+      if (coverResult.deleted) {
+        console.log(`Deleted whitepaper cover from storage: ${existing.coverImageUrl}`);
+      }
     }
 
     await recordAuditLog({
@@ -127,7 +175,11 @@ export async function DELETE(
       action: "DELETE_WHITEPAPER",
       targetType: "WHITEPAPER",
       targetId: id,
-      details: { title: existing.title, slug: existing.slug },
+      details: {
+        title: existing.title,
+        slug: existing.slug,
+        filesCleanup: cleanupResults,
+      },
     });
 
     revalidatePath("/whitepapers");

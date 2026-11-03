@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { requireAdminSession, recordAuditLog } from "@/app/lib/auth";
 import { TeamMemberSchema } from "@/app/lib/validation";
+import { safeDeleteStorageObject } from "@/app/lib/s3-cleanup";
 import prisma from "@/app/lib/prisma";
 
 export async function GET(
@@ -46,10 +47,32 @@ export async function PUT(
       );
     }
 
+    // Fetch the existing record to detect photo changes
+    const existing = await prisma.teamMember.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ error: "Team member not found" }, { status: 404 });
+    }
+
+    const oldPhotoUrl = existing.photoUrl;
+    const newPhotoUrl = parsed.data.photoUrl ?? null;
+
+
     const updated = await prisma.teamMember.update({
       where: { id },
       data: parsed.data,
     });
+
+    // If the photo was replaced or removed, clean up the old file from S3
+    if (oldPhotoUrl && oldPhotoUrl !== newPhotoUrl) {
+      const result = await safeDeleteStorageObject(oldPhotoUrl, {
+        model: "TeamMember",
+        id,
+      });
+      if (result.deleted) {
+        console.log(`Cleaned up old team member photo: ${oldPhotoUrl}`);
+      }
+    }
+
 
     await recordAuditLog({
       adminEmail: admin.email,
@@ -61,6 +84,7 @@ export async function PUT(
         name: updated.name,
         isPublished: updated.isPublished,
         displayOrder: updated.displayOrder,
+        photoChanged: oldPhotoUrl !== newPhotoUrl,
       },
     });
 
@@ -89,7 +113,18 @@ export async function DELETE(
       return NextResponse.json({ error: "Team member not found" }, { status: 404 });
     }
 
+    // Delete the database record first
     await prisma.teamMember.delete({ where: { id } });
+
+    // Then clean up the photo from S3 (if it exists and isn't shared)
+    if (existing.photoUrl) {
+      const result = await safeDeleteStorageObject(existing.photoUrl);
+      if (result.deleted) {
+        console.log(`Deleted team member photo from storage: ${existing.photoUrl}`);
+      } else {
+        console.log(`Skipped deleting photo ${existing.photoUrl}: ${result.reason}`);
+      }
+    }
 
     await recordAuditLog({
       adminEmail: admin.email,
@@ -97,7 +132,10 @@ export async function DELETE(
       action: "DELETE_TEAM_MEMBER",
       targetType: "TEAM_MEMBER",
       targetId: id,
-      details: { name: existing.name },
+      details: {
+        name: existing.name,
+        photoDeleted: !!existing.photoUrl,
+      },
     });
 
     revalidatePath("/about");

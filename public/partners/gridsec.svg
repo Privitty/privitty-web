@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60" fill="none">
-  <rect x="2" y="2" width="56" height="56" rx="12" fill="#D97706" fill-opacity="0.10" stroke="#F59E0B" stroke-width="2"/>
-  <path d="M30 14L42 22V38L30 46L18 38V22L30 14Z" stroke="#D97706" stroke-width="2.5" stroke-linejoin="round"/>
-  <path d="M30 22L36 30H24L30 38" stroke="#D97706" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="70" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#78350F" letter-spacing="-0.02em">Regional Grid</text>
-  <text x="70" y="47" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#6B7280" letter-spacing="0.04em">POWER & UTILITIES</text>
-</svg>

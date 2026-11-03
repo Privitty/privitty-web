@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, Trash2, Edit3, Search, FileText, Download, Eye, EyeOff, ExternalLink } from "lucide-react";
+import PdfUploadField from "@/app/admin/components/PdfUploadField";
+import ImageUploadField from "@/app/admin/components/ImageUploadField";
 
 interface Whitepaper {
   id: string;
@@ -63,7 +65,7 @@ export default function AdminWhitepapersPage() {
     slug: "",
     shortDescription: "",
     longDescription: "",
-    coverImageUrl: "",
+    coverImageUrl: "" as string | null,
     fileKey: "",
     fileName: "",
     fileSize: 1024 * 1024 * 2, // 2MB default
@@ -73,11 +75,7 @@ export default function AdminWhitepapersPage() {
     isPublished: true,
   });
 
-  useEffect(() => {
-    fetchWhitepapers();
-  }, [search, statusFilter]);
-
-  async function fetchWhitepapers() {
+  const fetchWhitepapers = React.useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -94,7 +92,11 @@ export default function AdminWhitepapersPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [search, statusFilter]);
+
+  useEffect(() => {
+    fetchWhitepapers(); // eslint-disable-line react-hooks/set-state-in-effect -- data-fetch on filter change
+  }, [fetchWhitepapers]);
 
   function generateSlug(text: string) {
     return text
@@ -110,9 +112,9 @@ export default function AdminWhitepapersPage() {
       slug: "",
       shortDescription: "",
       longDescription: "",
-      coverImageUrl: "/preview.png",
-      fileKey: "whitepapers/privitty-architecture-overview.pdf",
-      fileName: "Privitty-Architecture-Overview.pdf",
+      coverImageUrl: null,
+      fileKey: "",
+      fileName: "",
       fileSize: 1024 * 1024 * 2,
       category: "Security Architecture",
       author: "Privitty Security Research",
@@ -129,7 +131,7 @@ export default function AdminWhitepapersPage() {
       slug: item.slug,
       shortDescription: item.shortDescription,
       longDescription: item.longDescription ?? "",
-      coverImageUrl: item.coverImageUrl ?? "",
+      coverImageUrl: item.coverImageUrl,
       fileKey: item.fileKey,
       fileName: item.fileName,
       fileSize: item.fileSize,
@@ -142,7 +144,7 @@ export default function AdminWhitepapersPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Are you sure you want to delete this whitepaper?")) return;
+    if (!confirm("Are you sure you want to delete this whitepaper? The PDF and cover image will also be removed from storage.")) return;
     try {
       await apiFetch(`/api/admin/whitepapers/${id}`, { method: "DELETE" });
       setWhitepapers((prev) => prev.filter((w) => w.id !== id));
@@ -168,12 +170,23 @@ export default function AdminWhitepapersPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    // Require PDF file
+    if (!form.fileKey) {
+      alert("Please upload a PDF file before publishing.");
+      return;
+    }
     try {
+      const payload = {
+        ...form,
+        coverImageUrl: form.coverImageUrl || null,
+      };
+
       if (editing) {
         const updated = await apiFetch<Whitepaper>(`/api/admin/whitepapers/${editing.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
+          body: JSON.stringify(payload),
         });
         setWhitepapers((prev) =>
           prev.map((item) => (item.id === editing.id ? updated : item))
@@ -182,7 +195,7 @@ export default function AdminWhitepapersPage() {
         const created = await apiFetch<Whitepaper>("/api/admin/whitepapers", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
+          body: JSON.stringify(payload),
         });
         setWhitepapers((prev) => [...prev, created]);
       }
@@ -452,30 +465,32 @@ export default function AdminWhitepapersPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-gray-300 mb-1 font-medium">PDF Storage File Key *</label>
-                  <input
-                    type="text"
-                    required
-                    value={form.fileKey}
-                    onChange={(e) => setForm({ ...form, fileKey: e.target.value })}
-                    className="w-full bg-[#100D1A] text-white rounded-xl px-3.5 py-2.5 border border-white/10 focus:border-[#6750A4] focus:outline-none font-mono text-[11px]"
-                    placeholder="e.g. whitepapers/privitty-architecture.pdf"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-300 mb-1 font-medium">Download File Name *</label>
-                  <input
-                    type="text"
-                    required
-                    value={form.fileName}
-                    onChange={(e) => setForm({ ...form, fileName: e.target.value })}
-                    className="w-full bg-[#100D1A] text-white rounded-xl px-3.5 py-2.5 border border-white/10 focus:border-[#6750A4] focus:outline-none"
-                    placeholder="e.g. Privitty-Zero-Trust-Whitepaper.pdf"
-                  />
-                </div>
-              </div>
+              {/* PDF Upload Field */}
+              <PdfUploadField
+                label="PDF Document *"
+                fileKey={form.fileKey || null}
+                fileName={form.fileName || null}
+                fileSize={form.fileSize || null}
+                onChange={({ fileKey, fileName, fileSize }) => {
+                  setForm({
+                    ...form,
+                    fileKey: fileKey || "",
+                    fileName: fileName || "",
+                    fileSize: fileSize || 0,
+                  });
+                }}
+                downloadSlug={editing?.slug}
+              />
+
+              {/* Cover Image Upload */}
+              <ImageUploadField
+                label="Cover Image (Optional)"
+                value={form.coverImageUrl}
+                onChange={(value) => setForm({ ...form, coverImageUrl: value })}
+                folder="whitepapers"
+                aspectRatio="wide"
+                helperText="PNG, JPG, or WebP up to 5MB. Used on whitepaper cards."
+              />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div>

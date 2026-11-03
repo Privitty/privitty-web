@@ -37,7 +37,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="border-t border-[#DDD8E8] bg-[#F8F5FF] pt-16 pb-12 px-6">
+    <footer className="border-t border-[#DDD8E8] bg-[#F8F1FD] pt-16 pb-12 px-6">
       <div className="max-w-7xl mx-auto space-y-12">
         <div
           data-gsap="stagger"
@@ -64,7 +64,7 @@ export default function Footer() {
               default. Human access, always revocable. No VPN. No hardware. No
               open ports.
             </p>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EFEAF6] border border-[#DDD5EF] text-[10.5px] sm:text-[11px] font-bold tracking-[0.06em] text-[#432F75] select-none transition-all">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFF] border border-[#DDD5EF] text-[10.5px] sm:text-[11px] font-bold tracking-[0.06em] text-[#432F75] select-none transition-all">
               <ShieldIcon className="w-3.5 h-3.5 text-[#503796] shrink-0" />
               <span>Zero Open Ports &bull; Sovereign OT Architecture</span>
             </div>

@@ -48,13 +48,13 @@ export default function PartnerMarquee({ partners }: PartnerMarqueeProps) {
                 className="group relative flex items-center justify-center shrink-0 px-4 py-2 transition-transform duration-300 hover:scale-105"
                 title={partner.companyName}
               >
-                <div className="relative h-10 sm:h-12 w-32 sm:w-44 flex items-center justify-center">
+                <div className="relative h-20 sm:h-24 w-52 sm:w-64 flex items-center justify-center">
                   <Image
                     src={logoSrc}
                     alt={`${partner.companyName} logo`}
-                    width={180}
-                    height={48}
-                    className="max-h-10 sm:max-h-12 w-auto object-contain filter grayscale opacity-65 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 ease-in-out drop-shadow-xs"
+                    width={280}
+                    height={100}
+                    className="max-h-16 sm:max-h-20 max-w-full w-auto object-contain grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 ease-in-out drop-shadow-xs"
                     loading="lazy"
                   />
                 </div>

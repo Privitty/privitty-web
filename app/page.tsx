@@ -81,7 +81,7 @@ export default async function Home() {
                 </a>
                 <a
                   href="/whitepapers"
-                  className="px-6 sm:px-7 py-3.5 rounded-xl sm:rounded-2xl bg-[#ECE7F5] hover:bg-[#E2DCED] text-[#221C30] font-semibold text-sm sm:text-base transition-all flex items-center justify-center interactive-btn"
+                  className="px-6 sm:px-7 py-3.5 rounded-xl sm:rounded-2xl bg-white hover:bg-[#E2DCED] border border-[#DDD8E8] text-[#221C30] font-semibold text-sm sm:text-base transition-all flex items-center justify-center interactive-btn"
                 >
                   Whitepaper
                 </a>
@@ -852,7 +852,7 @@ export default async function Home() {
         {/* =========================================================================
             SECTION 8: BOTTOM CTA WITH CONCENTRIC CIRCLES
            ========================================================================= */}
-        <section className="relative py-28 md:py-36 px-6 overflow-hidden flex flex-col items-center justify-center text-center">
+        <section className="relative py-28 md:py-36 px-6 bg-[#F8F1FD] overflow-hidden flex flex-col items-center justify-center text-center">
           {/* Concentric Circular Background Patterns */}
           <div
             data-gsap="parallax"
@@ -878,7 +878,7 @@ export default async function Home() {
           {/* Top Pill Badge */}
           <div
             data-gsap="fade-up"
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EFEAF6] border border-[#DDD5EF] text-[10.5px] sm:text-[11px] font-bold tracking-[0.06em] text-[#432F75] uppercase select-none transition-all z-9"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#fff] border border-[#DDD5EF] text-[10.5px] sm:text-[11px] font-bold tracking-[0.06em] text-[#432F75] uppercase select-none transition-all z-9"
           >
             <ShieldIcon className="w-3.5 h-3.5 text-[#503796] shrink-0" />
             <span>READY TO SET THE NEW STANDARD?</span>

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef } from "react";
 import { LinkedInIcon } from "../components/Icons";
+import { resolveAssetUrl } from "@/app/lib/media";
 import type { PublicTeamMember } from "@/app/lib/queries";
 
 interface TeamCarouselProps {
@@ -90,11 +91,12 @@ export default function TeamCarousel({ teamMembers }: TeamCarouselProps) {
 
             <div className="relative aspect-square w-full rounded-xl overflow-hidden border border-[#DDD8E8]/50 bg-slate-100">
               <Image
-                src={member.photoUrl || "/preview.png"}
+                src={resolveAssetUrl(member.photoUrl) || "/preview.png"}
                 alt={`${member.name} - ${member.jobTitle}`}
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                unoptimized
               />
             </div>
           </div>

@@ -2,14 +2,14 @@
 
 import React, { useRef, useState } from "react";
 import Image from "next/image";
-import { Upload, X, RefreshCw, ImageIcon, Loader2 } from "lucide-react";
+import { Upload, X, RefreshCw, Loader2 } from "lucide-react";
 import { resolveAssetUrl } from "@/app/lib/media";
 
 interface ImageUploadFieldProps {
   label: string;
   value: string | null;
   onChange: (value: string | null) => void;
-  folder: "testimonials" | "partners" | "team" | "media";
+  folder: "testimonials" | "partners" | "team" | "media" | "whitepapers";
   aspectRatio?: "square" | "wide";
   helperText?: string;
 }
@@ -88,7 +88,18 @@ export default function ImageUploadField({
       });
 
       if (!uploadRes.ok) {
-        throw new Error(`Upload failed with status ${uploadRes.status}`);
+        let errorDetail = `Upload failed with status ${uploadRes.status}`;
+        try {
+          const errBody = await uploadRes.json();
+          if (errBody?.error) {
+            errorDetail = errBody.error;
+          }
+        } catch {
+          // If not JSON, try text
+          const errText = await uploadRes.text().catch(() => "");
+          if (errText) errorDetail = errText;
+        }
+        throw new Error(errorDetail);
       }
 
       // 3. Save the resulting fileKey in PostgreSQL form state

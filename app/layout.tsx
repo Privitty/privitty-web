@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Manrope, Inter, Newsreader } from "next/font/google";
+import { Inter, Newsreader } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import ScrollAnimations from "./components/animations/ScrollAnimations";
 
-const manrope = Manrope({
+const manrope = localFont({
+  src: "../public/fonts/Manrope-VariableFont_wght.ttf",
   variable: "--font-manrope",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  weight: "400 500 600 700 800",
 });
 
 const inter = Inter({

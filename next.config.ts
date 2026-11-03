@@ -8,6 +8,20 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   partialPrefetching: true,
+  
+  images: {
+    remotePatterns: [
+      // S3 bucket direct access
+      {
+        protocol: "https",
+        hostname: "*.s3.*.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.s3.amazonaws.com",
+      },
+    ],
+  },
   turbopack: {
     rules: {
       "*.css": {

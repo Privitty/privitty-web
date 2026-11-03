@@ -15,11 +15,46 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: "Missing key parameter" }, { status: 400 });
     }
 
+    // In serverless hosting (e.g. AWS Amplify Lambda, Vercel), local filesystem is read-only
+    const isServerless = Boolean(
+      process.env.AWS_LAMBDA_FUNCTION_NAME ||
+      process.env.VERCEL ||
+      (process.env.NODE_ENV === "production" && !process.env.ENABLE_LOCAL_STORAGE_FALLBACK)
+    );
+
+    if (isServerless) {
+      return NextResponse.json(
+        {
+          error:
+            "Local file upload is not supported in production serverless environments (AWS Amplify filesystem is read-only). Please configure S3_BUCKET, S3_REGION, S3_ACCESS_KEY_ID, and S3_SECRET_ACCESS_KEY in AWS Amplify Console (App settings → Environment variables).",
+        },
+        { status: 500 }
+      );
+    }
+
     // Clean key preventing directory traversal
     const safeKey = fileKey.replace(/\.\./g, "").replace(/^\/+/, "");
     const localFilePath = path.join(process.cwd(), "public", "uploads", safeKey);
 
-    await fs.mkdir(path.dirname(localFilePath), { recursive: true });
+    try {
+      await fs.mkdir(path.dirname(localFilePath), { recursive: true });
+    } catch (mkdirErr: unknown) {
+      if (
+        mkdirErr &&
+        typeof mkdirErr === "object" &&
+        "code" in mkdirErr &&
+        mkdirErr.code === "EROFS"
+      ) {
+        return NextResponse.json(
+          {
+            error:
+              "Read-only filesystem: AWS Amplify Lambda functions cannot store files locally. Configure S3_BUCKET and AWS credentials in Amplify Console to enable S3 storage.",
+          },
+          { status: 500 }
+        );
+      }
+      throw mkdirErr;
+    }
 
     const arrayBuffer = await req.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -57,7 +92,31 @@ export async function PUT(req: NextRequest) {
     if (err instanceof Error && err.message === "UNAUTHORIZED") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+
+    if (
+      err &&
+      typeof err === "object" &&
+      "code" in err &&
+      err.code === "EROFS"
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Read-only filesystem: AWS Amplify Lambda functions cannot store files locally. Configure S3_BUCKET and AWS credentials in Amplify Console to enable S3 storage.",
+        },
+        { status: 500 }
+      );
+    }
+
     console.error("Local upload error:", err);
-    return NextResponse.json({ error: "Failed to save upload" }, { status: 500 });
+    return NextResponse.json(
+      {
+        error:
+          err instanceof Error
+            ? err.message
+            : "Failed to save upload to local storage",
+      },
+      { status: 500 }
+    );
   }
 }

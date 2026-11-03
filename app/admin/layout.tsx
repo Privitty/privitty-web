@@ -17,7 +17,7 @@ import {
   Menu,
   X,
   ChevronRight,
-  Database,
+  HardDrive,
 } from "lucide-react";
 
 interface AdminUser {
@@ -129,6 +129,12 @@ export default function AdminLayout({
       href: "/admin/media",
       icon: ImageIcon,
       active: pathname.startsWith("/admin/media"),
+    },
+    {
+      label: "Storage",
+      href: "/admin/storage",
+      icon: HardDrive,
+      active: pathname.startsWith("/admin/storage"),
     },
     {
       label: "Settings",

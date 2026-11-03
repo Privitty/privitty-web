@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Plus, Trash2, Edit3, Search, Eye, EyeOff } from "lucide-react";
 import { LinkedInIcon } from "@/app/components/Icons";
+import { resolveAssetUrl } from "@/app/lib/media";
+import ImageUploadField from "@/app/admin/components/ImageUploadField";
 
 interface TeamMember {
   id: string;
@@ -51,7 +53,7 @@ export default function AdminTeamPage() {
     name: "",
     jobTitle: "",
     bio: "",
-    photoUrl: "",
+    photoUrl: "" as string | null,
     linkedinUrl: "",
     twitterUrl: "",
     otherUrl: "",
@@ -59,11 +61,7 @@ export default function AdminTeamPage() {
     isPublished: true,
   });
 
-  useEffect(() => {
-    fetchMembers();
-  }, [search, statusFilter]);
-
-  async function fetchMembers() {
+  const fetchMembers = React.useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -80,7 +78,12 @@ export default function AdminTeamPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [search, statusFilter]);
+
+  useEffect(() => {
+    fetchMembers(); // eslint-disable-line react-hooks/set-state-in-effect -- data-fetch on filter change
+  }, [fetchMembers]);
+  
 
   function openCreate() {
     setEditing(null);
@@ -88,7 +91,7 @@ export default function AdminTeamPage() {
       name: "",
       jobTitle: "",
       bio: "",
-      photoUrl: "",
+      photoUrl: null,
       linkedinUrl: "",
       twitterUrl: "",
       otherUrl: "",
@@ -104,7 +107,7 @@ export default function AdminTeamPage() {
       name: item.name,
       jobTitle: item.jobTitle,
       bio: item.bio ?? "",
-      photoUrl: item.photoUrl ?? "",
+      photoUrl: item.photoUrl,
       linkedinUrl: item.linkedinUrl ?? "",
       twitterUrl: item.twitterUrl ?? "",
       otherUrl: item.otherUrl ?? "",
@@ -115,7 +118,7 @@ export default function AdminTeamPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Are you sure you want to remove this team member?")) return;
+    if (!confirm("Are you sure you want to remove this team member? Any uploaded photo will also be deleted from storage.")) return;
     try {
       await apiFetch(`/api/admin/team/${id}`, { method: "DELETE" });
       setMembers((prev) => prev.filter((m) => m.id !== id));
@@ -142,11 +145,16 @@ export default function AdminTeamPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
+      const payload = {
+        ...form,
+        photoUrl: form.photoUrl || null,
+      };
+
       if (editing) {
         const updated = await apiFetch<TeamMember>(`/api/admin/team/${editing.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
+          body: JSON.stringify(payload),
         });
         setMembers((prev) =>
           prev.map((item) => (item.id === editing.id ? updated : item))
@@ -155,7 +163,7 @@ export default function AdminTeamPage() {
         const created = await apiFetch<TeamMember>("/api/admin/team", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
+          body: JSON.stringify(payload),
         });
         setMembers((prev) => [...prev, created]);
       }
@@ -249,10 +257,11 @@ export default function AdminTeamPage() {
                 <div className="flex items-center gap-4">
                   <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-white/10 bg-slate-800">
                     <Image
-                      src={m.photoUrl || "/milind.png"}
+                      src={m.photoUrl ? resolveAssetUrl(m.photoUrl) : "/preview.png"}
                       alt={m.name}
                       fill
                       className="object-cover"
+                      unoptimized
                     />
                   </div>
                   <div className="min-w-0">
@@ -363,16 +372,15 @@ export default function AdminTeamPage() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-gray-300 mb-1 font-medium">Photo Path or URL</label>
-                <input
-                  type="text"
-                  value={form.photoUrl}
-                  onChange={(e) => setForm({ ...form, photoUrl: e.target.value })}
-                  className="w-full bg-[#100D1A] text-white rounded-xl px-3.5 py-2.5 border border-white/10 focus:border-[#6750A4] focus:outline-none"
-                  placeholder="e.g. /milind.png or https://..."
-                />
-              </div>
+              {/* Image Upload Field - replaces the old text input */}
+              <ImageUploadField
+                label="Team Member Photo"
+                value={form.photoUrl}
+                onChange={(value) => setForm({ ...form, photoUrl: value })}
+                folder="team"
+                aspectRatio="square"
+                helperText="JPG, PNG, or WebP up to 5MB. Square photos work best."
+              />
 
               <div>
                 <label className="block text-gray-300 mb-1 font-medium">LinkedIn Profile URL</label>
