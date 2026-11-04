@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import BrandTagline from "./components/BrandTagline";
 import SecurityDashboardCard from "./components/SecurityDashboardCard";
 import PartnerMarquee from "./components/PartnerMarquee";
+import ArchitectureComparison from "./components/ArchitectureComparison";
 import { getPublishedTestimonials, getPublishedPartners } from "@/app/lib/queries";
 import { resolveAssetUrl } from "@/app/lib/media";
 import {
@@ -647,6 +648,11 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
+        {/* =========================================================================
+            SECTION: ARCHITECTURE COMPARISON
+           ========================================================================= */}
+        <ArchitectureComparison />
 
         {/* =========================================================================
             SECTION 7: TESTIMONIALS & STATS BAR
