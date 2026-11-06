@@ -11,8 +11,16 @@ export const TestimonialSchema = z.object({
   companyName: z.string().min(2, "Company name is required").max(100),
   quote: z.string().min(10, "Quote must be at least 10 characters").max(2000),
   rating: z.coerce.number().int().min(1).max(5).default(5),
-  authorPortrait: z.string().nullable().optional(),
-  companyLogo: z.string().nullable().optional(),
+  authorPortrait: z
+    .string()
+    .nullable()
+    .optional()
+    .transform((val) => (val && val.trim() !== "" ? val.trim() : null)),
+  companyLogo: z
+    .string()
+    .nullable()
+    .optional()
+    .transform((val) => (val && val.trim() !== "" ? val.trim() : null)),
   displayOrder: z.coerce.number().int().default(0),
   isPublished: z.boolean().default(true),
   isFeatured: z.boolean().default(false),

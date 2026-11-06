@@ -4,19 +4,38 @@ import { GetObjectCommand } from "@aws-sdk/client-s3";
 import path from "path";
 import fs from "fs";
 
+function getMimeType(filePath: string): string {
+  const ext = path.extname(filePath).toLowerCase();
+  const mimeMap: Record<string, string> = {
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".webp": "image/webp",
+    ".svg": "image/svg+xml",
+    ".pdf": "application/pdf",
+    ".gif": "image/gif",
+    ".ico": "image/x-icon",
+  };
+  return mimeMap[ext] || "application/octet-stream";
+}
+
+function serveLocalFile(filePath: string): NextResponse {
+  const contentType = getMimeType(filePath);
+  const fileStream = fs.createReadStream(filePath);
+  const headers = new Headers();
+  headers.set("Content-Type", contentType);
+  headers.set("Cache-Control", "public, max-age=31536000, immutable");
+  headers.set("Access-Control-Allow-Origin", "*");
+
+  // @ts-expect-error - ReadableStream type compatibility with Next.js Response
+  return new NextResponse(fileStream, { headers });
+}
+
 /**
  * Universal Media Proxy Route
  * GET /api/media/[...key]
  *
- * Securely streams media objects stored in S3 using server-side IAM credentials
- * (arn:aws:iam::860849023058:user/privitty-s3-uploader).
- *
- * Benefits:
- * 1. Works with 100% private S3 buckets without needing public bucket access.
- * 2. Works without exposing S3 bucket names or IAM secrets to client bundles.
- * 3. Never fails CORS or Next.js remotePatterns restrictions because it is same-origin.
- * 4. Includes long-lived immutable cache headers for peak performance.
- * 5. Falls back to local disk storage automatically in local development.
+ * Securely streams media objects stored in S3 or local disk storage.
  */
 export async function GET(
   req: NextRequest,
@@ -34,85 +53,97 @@ export async function GET(
 
     const config = getStorageConfig();
 
-    // 1. Local fallback storage check
-    if (config.isLocalStorageFallback) {
-      const localFilePath = path.join(process.cwd(), "public", "uploads", safeKey);
-      if (fs.existsSync(localFilePath)) {
-        const ext = path.extname(safeKey).toLowerCase();
-        const mimeMap: Record<string, string> = {
-          ".png": "image/png",
-          ".jpg": "image/jpeg",
-          ".jpeg": "image/jpeg",
-          ".webp": "image/webp",
-          ".svg": "image/svg+xml",
-          ".pdf": "application/pdf",
-        };
-        const contentType = mimeMap[ext] || "application/octet-stream";
-        const fileStream = fs.createReadStream(localFilePath);
-        const headers = new Headers();
-        headers.set("Content-Type", contentType);
-        headers.set("Cache-Control", "public, max-age=31536000, immutable");
+    // 1. Check local uploads or public directory first if local storage fallback is enabled
+    const localUploadPath = path.join(process.cwd(), "public", "uploads", safeKey);
+    const localPublicPath = path.join(process.cwd(), "public", safeKey);
 
-        // @ts-expect-error - ReadableStream type compatibility with Next.js Response
-        return new NextResponse(fileStream, { headers });
+    if (config.isLocalStorageFallback) {
+      if (fs.existsSync(localUploadPath)) {
+        return serveLocalFile(localUploadPath);
+      }
+      if (fs.existsSync(localPublicPath)) {
+        return serveLocalFile(localPublicPath);
       }
     }
 
     // 2. S3 Storage
-    if (!config.bucketName) {
-      return new NextResponse(
-        "S3_BUCKET is not configured in server environment variables.",
-        { status: 500 }
-      );
+    if (config.bucketName) {
+      try {
+        const client = getS3Client();
+        const command = new GetObjectCommand({
+          Bucket: config.bucketName,
+          Key: safeKey,
+        });
+
+        const s3Response = await client.send(command);
+
+        if (s3Response.Body) {
+          const headers = new Headers();
+          const contentType = s3Response.ContentType || getMimeType(safeKey);
+          headers.set("Content-Type", contentType);
+
+          if (s3Response.ContentLength !== undefined) {
+            headers.set("Content-Length", s3Response.ContentLength.toString());
+          }
+          if (s3Response.ETag) {
+            headers.set("ETag", s3Response.ETag);
+          }
+          headers.set("Cache-Control", "public, max-age=31536000, immutable");
+          headers.set("Access-Control-Allow-Origin", "*");
+
+          // Convert SdkStream to standard Web ReadableStream
+          const stream = s3Response.Body.transformToWebStream();
+
+          return new Response(stream, {
+            status: 200,
+            headers,
+          });
+        }
+      } catch (s3Err: unknown) {
+        // If S3 fails or file is not found, check if local disk has a matching file as fallback
+        if (fs.existsSync(localUploadPath)) {
+          return serveLocalFile(localUploadPath);
+        }
+        if (fs.existsSync(localPublicPath)) {
+          return serveLocalFile(localPublicPath);
+        }
+
+        if (s3Err && typeof s3Err === "object") {
+          const name = "name" in s3Err ? (s3Err.name as string) : "";
+          if (name === "NoSuchKey" || name === "NotFound") {
+            return new NextResponse("Media asset not found in storage", { status: 404 });
+          }
+          if (
+            name === "AccessDenied" ||
+            ("$metadata" in s3Err &&
+              (s3Err as { $metadata?: { httpStatusCode?: number } }).$metadata
+                ?.httpStatusCode === 403)
+          ) {
+            return new NextResponse(
+              "Access denied by S3. Ensure IAM credentials have 's3:GetObject' permission.",
+              { status: 403 }
+            );
+          }
+        }
+
+        console.error(`S3 get error for key ${safeKey}:`, s3Err);
+        return new NextResponse("Failed to load media asset from S3", { status: 502 });
+      }
     }
 
-    const client = getS3Client();
-    const command = new GetObjectCommand({
-      Bucket: config.bucketName,
-      Key: safeKey,
-    });
-
-    const s3Response = await client.send(command);
-
-    if (!s3Response.Body) {
-      return new NextResponse("Empty response body from S3", { status: 500 });
+    // 3. If no bucket configured, check if local file exists before failing
+    if (fs.existsSync(localUploadPath)) {
+      return serveLocalFile(localUploadPath);
+    }
+    if (fs.existsSync(localPublicPath)) {
+      return serveLocalFile(localPublicPath);
     }
 
-    const headers = new Headers();
-    const contentType = s3Response.ContentType || "application/octet-stream";
-    headers.set("Content-Type", contentType);
-
-    if (s3Response.ContentLength !== undefined) {
-      headers.set("Content-Length", s3Response.ContentLength.toString());
-    }
-    if (s3Response.ETag) {
-      headers.set("ETag", s3Response.ETag);
-    }
-    // High performance caching: 1 year immutable cache (object keys contain timestamps + random hashes)
-    headers.set("Cache-Control", "public, max-age=31536000, immutable");
-
-    // Convert SdkStream to standard Web ReadableStream
-    const stream = s3Response.Body.transformToWebStream();
-
-    return new Response(stream, {
-      status: 200,
-      headers,
-    });
+    return new NextResponse(
+      "Media asset not found and storage bucket is not configured.",
+      { status: 404 }
+    );
   } catch (err: unknown) {
-    if (err && typeof err === "object") {
-      // Check for S3 specific errors
-      const name = "name" in err ? (err.name as string) : "";
-      if (name === "NoSuchKey" || name === "NotFound") {
-        return new NextResponse("Media asset not found in storage", { status: 404 });
-      }
-      if (name === "AccessDenied" || ("$metadata" in err && (err as { $metadata?: { httpStatusCode?: number } }).$metadata?.httpStatusCode === 403)) {
-        return new NextResponse(
-          "Access denied by S3. Ensure IAM user (arn:aws:iam::user:user/privitty-s3-uploader) has 's3:GetObject' permission on this bucket.",
-          { status: 403 }
-        );
-      }
-    }
-
     console.error("Media preview error:", err);
     return new NextResponse("Failed to load media asset", { status: 500 });
   }

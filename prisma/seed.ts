@@ -52,7 +52,7 @@ async function main() {
       quote:
         "Their team helped us identify critical gaps in remote access, then deployed tools that improved both our speed and traceability.",
       rating: 5,
-      authorPortrait: null,
+      authorPortrait: "/testimonials/leading-oem.png",
       displayOrder: 2,
       isPublished: true,
       isFeatured: false,
@@ -64,7 +64,7 @@ async function main() {
       quote:
         "We needed zero-trust remote access, and they nailed it. Every step was collaborative, transparent, and focused on securing the right outcome for us.",
       rating: 5,
-      authorPortrait: null,
+      authorPortrait: "/testimonials/pankaj-garg.png",
       displayOrder: 3,
       isPublished: true,
       isFeatured: false,
@@ -76,7 +76,7 @@ async function main() {
       quote:
         "From onboarding to live deployment, they were incredibly proactive and sharp. Our new identity-verified access layer reduced manual overhead.",
       rating: 5,
-      authorPortrait: null,
+      authorPortrait: "/testimonials/santosh-honnagunti.png",
       displayOrder: 4,
       isPublished: true,
       isFeatured: false,

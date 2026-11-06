@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdminSession, recordAuditLog } from "@/app/lib/auth";
 import { TestimonialSchema } from "@/app/lib/validation";
 import prisma from "@/app/lib/prisma";
@@ -91,6 +91,13 @@ export async function POST(req: NextRequest) {
     });
 
     revalidatePath("/");
+    revalidatePath("/admin/testimonials");
+    try {
+      revalidateTag("testimonials", { expire: 0 });
+      revalidateTag("homepage-testimonials", { expire: 0 });
+    } catch {
+      // Ignore if cacheTag not supported in environment
+    }
 
     return NextResponse.json({ success: true, testimonial }, { status: 201 });
   } catch (err: unknown) {

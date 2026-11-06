@@ -127,7 +127,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="https://docs.edge.privittytech.com/"
+                  href="https://docs.privitty.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-[#6750A4] transition-colors inline-block hover:translate-x-0.5 duration-150"

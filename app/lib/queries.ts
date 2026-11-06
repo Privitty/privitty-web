@@ -1,4 +1,13 @@
 import prisma from "@/app/lib/prisma";
+import { cacheTag } from "next/cache";
+
+const STATIC_TESTIMONIAL_PORTRAITS: Record<string, string> = {
+  "Industrial Automation Consortium": "/industrial-partner.jpg",
+  "Leading OEM": "/testimonials/leading-oem.png",
+  "Leading OEMs": "/testimonials/leading-oem.png",
+  "Pankaj Garg": "/testimonials/pankaj-garg.png",
+  "Dr. Santosh Honnagunti": "/testimonials/santosh-honnagunti.png",
+};
 
 export interface PublicTestimonial {
   id: string;
@@ -69,6 +78,11 @@ export class DatabaseQueryError extends Error {
 export async function getPublishedTestimonials(): Promise<PublicTestimonial[]> {
   "use cache";
   try {
+    cacheTag("testimonials", "homepage-testimonials");
+  } catch {
+    // Graceful fallback if invoked outside Next.js cacheComponents runtime
+  }
+  try {
     const testimonials = await prisma.testimonial.findMany({
       where: { isPublished: true },
       orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
@@ -88,7 +102,13 @@ export async function getPublishedTestimonials(): Promise<PublicTestimonial[]> {
       },
     });
 
-    return testimonials;
+    return testimonials.map((t) => ({
+      ...t,
+      authorPortrait:
+        t.authorPortrait && t.authorPortrait.trim() !== ""
+          ? t.authorPortrait.trim()
+          : STATIC_TESTIMONIAL_PORTRAITS[t.authorName] || null,
+    }));
   } catch (error) {
     console.error("[getPublishedTestimonials] Database query failed:", error);
     throw new DatabaseQueryError("Failed to fetch published testimonials from database", error);
